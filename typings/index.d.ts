@@ -33,4 +33,5 @@ export default class rrwebPlayer extends SvelteComponent {
   play: () => void;
   pause: () => void;
   goto: (timeOffset: number, play?: boolean) => void;
+  progressClick: (event: MouseEvent) => void;
 }

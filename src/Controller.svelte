@@ -153,9 +153,11 @@
   };
 
   const handleProgressClick = (event: MouseEvent) => {
+    /* bss custom
     if (speedState === 'skipping') {
       return;
     }
+    */
     const progressRect = progress.getBoundingClientRect();
     const x = event.clientX - progressRect.left;
     let percent = x / progressRect.width;
@@ -329,7 +331,6 @@
       <span class="rr-timeline__time">{formatTime(currentTime)}</span>
       <div
         class="rr-progress"
-        class:disabled={speedState === 'skipping'}
         bind:this={progress}
         on:click={(event) => handleProgressClick(event)}>
         <div
@@ -394,14 +395,14 @@
         <button
           class:active={s === speed && speedState !== 'skipping'}
           on:click={() => setSpeed(s)}
-          disabled={speedState === 'skipping'}>
+          >
           {s}x
         </button>
       {/each}
       <Switch
         id="skip"
         bind:checked={skipInactive}
-        disabled={speedState === 'skipping'}
+        disabled={false}
         label="skip inactive" />
       <button on:click={() => dispatch('fullscreen')}>
         <svg

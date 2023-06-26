@@ -1,6 +1,6 @@
 {
-  "name": "rrweb-player",
-  "version": "0.7.4",
+  "name": "@bss-sbc/rrweb-player",
+  "version": "1.0.1",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-node-resolve": "^7.0.0",
@@ -56,5 +56,10 @@
   "bugs": {
     "url": "https://github.com/rrweb-io/rrweb-player/issues"
   },
-  "homepage": "https://github.com/rrweb-io/rrweb-player#readme"
+  "homepage": "https://github.com/rrweb-io/rrweb-player#readme",
+  "readme": "README.md",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
