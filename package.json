@@ -46,7 +46,7 @@
   "typings": "typings/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rrweb-io/rrweb-player.git"
+    "url": "git+https://github.com/xhoang0509/rrweb-player"
   },
   "keywords": [
     "rrweb"
