@@ -153,11 +153,9 @@
   };
 
   const handleProgressClick = (event: MouseEvent) => {
-    /* bss custom
     if (speedState === 'skipping') {
       return;
     }
-    */
     const progressRect = progress.getBoundingClientRect();
     const x = event.clientX - progressRect.left;
     let percent = x / progressRect.width;
@@ -269,9 +267,9 @@
     border-bottom: solid 4px #fff;
   }
 
-  .rr-progress.disabled {
+  /* .rr-progress.disabled {
     cursor: not-allowed;
-  }
+  } */
 
   .rr-progress__step {
     height: 100%;
