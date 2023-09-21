@@ -267,9 +267,9 @@
     border-bottom: solid 4px #fff;
   }
 
-  /* .rr-progress.disabled {
+  .rr-progress.disabled {
     cursor: not-allowed;
-  } */
+  }
 
   .rr-progress__step {
     height: 100%;
