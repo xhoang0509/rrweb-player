@@ -12,5 +12,3 @@ dist
 lib
 
 *.log
-
-yarn.lock
