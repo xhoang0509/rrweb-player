@@ -12,8 +12,8 @@
   } from './utils';
   import Controller from './Controller.svelte';
 
-  export let width: number = 1024;
-  export let height: number = 576;
+  export let width: number = 1400;
+  export let height: number = 720;
   export let events: eventWithTime[] = [];
   export let skipInactive: boolean = true;
   export let autoPlay: boolean = true;
