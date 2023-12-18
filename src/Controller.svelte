@@ -78,7 +78,7 @@
       if (event.type === EventType.Custom) {
         const customEvent = {
           name: event.data.tag,
-          background: tags[event.data.tag] || 'rgb(73, 80, 246)',
+          background: tags[event.data.tag] || '#5f6dc5',
           position: `${position(start, end, event.timestamp)}%`,
         };
         customEvents.push(customEvent);
@@ -230,6 +230,110 @@
   });
 </script>
 
+{#if showController}
+  <div class="rr-controller">
+    <div class="rr-timeline">
+      <span class="rr-timeline__time">{formatTime(currentTime)}</span>
+      <div
+        class="rr-progress"
+        bind:this={progress}
+        on:click={(event) => handleProgressClick(event)}
+      >
+        <div
+          class="rr-progress__step"
+          bind:this={step}
+          style="width: {percentage}"
+        />
+        {#each customEvents as event}
+          <div
+            title={event.name}
+            style="width: 10px;height: 5px;position: absolute;top:
+            2px;transform: translate(-50%, -50%);background: {event.background};left:
+            {event.position};"
+          />
+        {/each}
+
+        <div class="rr-progress__handler" style="left: {percentage}" />
+      </div>
+      <span class="rr-timeline__time">{formatTime(meta.totalTime)}</span>
+    </div>
+    <div class="rr-controller__btns">
+      <div class="rr-controler-btn__left">
+        <button on:click={toggle}>
+          {#if playerState === 'playing'}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 48 48"
+              xmlns="http://www.w3.org/2000/svg"
+              ><g id="Play"
+                ><path
+                  d="m37.324 20.026-22-12.412a4.685 4.685 0 0 0 -4.711.036 4.528 4.528 0 0 0 -2.28 3.938v24.824a4.528 4.528 0 0 0 2.28 3.938 4.687 4.687 0 0 0 4.711.036l22-12.412a4.543 4.543 0 0 0 0-7.948z"
+                /></g
+              ></svg
+            >
+          {:else}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g clip-path="url(#clip0_908_391)">
+                <path d="M3 22H9V2H3V22ZM15 2V22H21V2H15Z" fill="black" />
+              </g>
+              <defs>
+                <clipPath id="clip0_908_391">
+                  <rect width="24" height="24" fill="white" />
+                </clipPath>
+              </defs>
+            </svg>
+          {/if}
+        </button>
+      </div>
+      <div class="rr-controler-btn__right">
+        {#each speedOption as s}
+          <button
+            class:active={s === speed && speedState !== 'skipping'}
+            on:click={() => setSpeed(s)}
+          >
+            {s}x
+          </button>
+        {/each}
+        <div class="rr-fullscreen" on:click={() => dispatch('fullscreen')}>
+          <button>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><g id="Layer_6" data-name="Layer 6"
+                ><path
+                  d="m21 9a1 1 0 0 1 -1-1v-4h-4a1 1 0 0 1 0-2h4a2 2 0 0 1 2 2v4a1 1 0 0 1 -1 1z"
+                /><path
+                  d="m20 22h-4a1 1 0 0 1 0-2h4v-4a1 1 0 0 1 2 0v4a2 2 0 0 1 -2 2z"
+                /><path
+                  d="m8 22h-4a2 2 0 0 1 -2-2v-4a1 1 0 0 1 2 0v4h4a1 1 0 0 1 0 2z"
+                /><path
+                  d="m3 9a1 1 0 0 1 -1-1v-4a2 2 0 0 1 2-2h4a1 1 0 0 1 0 2h-4v4a1 1 0 0 1 -1 1z"
+                /></g
+              ></svg
+            >
+          </button>
+          <span>Fullscreen</span>
+        </div>
+        <Switch
+          id="skip"
+          bind:checked={skipInactive}
+          disabled={false}
+          label="skip inactive"
+        />
+      </div>
+    </div>
+  </div>
+{/if}
+
 <style>
   .rr-controller {
     width: 100%;
@@ -238,7 +342,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: center;
+    align-items: space-between;
     border-radius: 0 0 5px 5px;
   }
 
@@ -286,13 +390,13 @@
     position: absolute;
     top: 2px;
     transform: translate(-50%, -50%);
-    background: rgb(73, 80, 246);
+    background: #5f6dc5;
   }
 
   .rr-controller__btns {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     font-size: 13px;
   }
 
@@ -315,118 +419,22 @@
 
   .rr-controller__btns button.active {
     color: #fff;
-    background: rgb(73, 80, 246);
+    background: #5f6dc5;
   }
 
   .rr-controller__btns button:disabled {
     cursor: not-allowed;
   }
+  .rr-controler-btn__right {
+    display: flex;
+    align-items: center;
+  }
+
+  .rr-fullscreen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    cursor: pointer;
+  }
 </style>
-
-{#if showController}
-  <div class="rr-controller">
-    <div class="rr-timeline">
-      <span class="rr-timeline__time">{formatTime(currentTime)}</span>
-      <div
-        class="rr-progress"
-        bind:this={progress}
-        on:click={(event) => handleProgressClick(event)}>
-        <div
-          class="rr-progress__step"
-          bind:this={step}
-          style="width: {percentage}" />
-        {#each customEvents as event}
-          <div
-            title={event.name}
-            style="width: 10px;height: 5px;position: absolute;top:
-            2px;transform: translate(-50%, -50%);background: {event.background};left:
-            {event.position};" />
-        {/each}
-
-        <div class="rr-progress__handler" style="left: {percentage}" />
-      </div>
-      <span class="rr-timeline__time">{formatTime(meta.totalTime)}</span>
-    </div>
-    <div class="rr-controller__btns">
-      <button on:click={toggle}>
-        {#if playerState === 'playing'}
-          <svg
-            class="icon"
-            viewBox="0 0 1024 1024"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="16"
-            height="16">
-            <path
-              d="M682.65984 128q53.00224 0 90.50112 37.49888t37.49888 90.50112l0
-              512q0 53.00224-37.49888 90.50112t-90.50112
-              37.49888-90.50112-37.49888-37.49888-90.50112l0-512q0-53.00224
-              37.49888-90.50112t90.50112-37.49888zM341.34016 128q53.00224 0
-              90.50112 37.49888t37.49888 90.50112l0 512q0 53.00224-37.49888
-              90.50112t-90.50112
-              37.49888-90.50112-37.49888-37.49888-90.50112l0-512q0-53.00224
-              37.49888-90.50112t90.50112-37.49888zM341.34016 213.34016q-17.67424
-              0-30.16704 12.4928t-12.4928 30.16704l0 512q0 17.67424 12.4928
-              30.16704t30.16704 12.4928 30.16704-12.4928
-              12.4928-30.16704l0-512q0-17.67424-12.4928-30.16704t-30.16704-12.4928zM682.65984
-              213.34016q-17.67424 0-30.16704 12.4928t-12.4928 30.16704l0 512q0
-              17.67424 12.4928 30.16704t30.16704 12.4928 30.16704-12.4928
-              12.4928-30.16704l0-512q0-17.67424-12.4928-30.16704t-30.16704-12.4928z" />
-          </svg>
-        {:else}
-          <svg
-            class="icon"
-            viewBox="0 0 1024 1024"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            width="16"
-            height="16">
-            <path
-              d="M170.65984 896l0-768 640 384zM644.66944
-              512l-388.66944-233.32864 0 466.65728z" />
-          </svg>
-        {/if}
-      </button>
-      {#each speedOption as s}
-        <button
-          class:active={s === speed && speedState !== 'skipping'}
-          on:click={() => setSpeed(s)}
-          >
-          {s}x
-        </button>
-      {/each}
-      <Switch
-        id="skip"
-        bind:checked={skipInactive}
-        disabled={false}
-        label="skip inactive" />
-      <button on:click={() => dispatch('fullscreen')}>
-        <svg
-          class="icon"
-          viewBox="0 0 1024 1024"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          width="16"
-          height="16">
-          <defs>
-            <style type="text/css">
-
-            </style>
-          </defs>
-          <path
-            d="M916 380c-26.4 0-48-21.6-48-48L868 223.2 613.6 477.6c-18.4
-            18.4-48.8 18.4-68 0-18.4-18.4-18.4-48.8 0-68L800 156 692 156c-26.4
-            0-48-21.6-48-48 0-26.4 21.6-48 48-48l224 0c26.4 0 48 21.6 48 48l0
-            224C964 358.4 942.4 380 916 380zM231.2 860l108.8 0c26.4 0 48 21.6 48
-            48s-21.6 48-48 48l-224 0c-26.4 0-48-21.6-48-48l0-224c0-26.4 21.6-48
-            48-48 26.4 0 48 21.6 48 48L164 792l253.6-253.6c18.4-18.4 48.8-18.4
-            68 0 18.4 18.4 18.4 48.8 0 68L231.2 860z"
-            p-id="1286" />
-        </svg>
-      </button>
-    </div>
-  </div>
-{/if}
