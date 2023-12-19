@@ -14,7 +14,13 @@
   } from 'svelte';
   import { formatTime } from './utils';
   import Switch from './components/Switch.svelte';
-
+  import {
+    btnForward,
+    btnFullscreen,
+    btnPause,
+    btnPlaying,
+    btnRewind,
+  } from './constants/buttons.const';
   const dispatch = createEventDispatcher();
 
   export let replayer: Replayer;
@@ -24,6 +30,7 @@
   export let speedOption: number[];
   export let speed = speedOption.length ? speedOption[0] : 1;
   export let tags: Record<string, string> = {};
+  export let activeSpeed: boolean = false;
 
   let currentTime = 0;
   $: {
@@ -178,10 +185,31 @@
     if (needFreeze) {
       replayer.play(currentTime);
     }
+    toggleOptionsPopup();
   };
 
   export const toggleSkipInactive = () => {
     skipInactive = !skipInactive;
+  };
+
+  export const toggleOptionsPopup = () => {
+    activeSpeed = !activeSpeed;
+  };
+
+  export const handleRewindTime = () => {
+    if (currentTime - 10000 > 0) {
+      goto(currentTime - 10000);
+    } else {
+      goto(0);
+    }
+  };
+
+  export const handleForwardTime = () => {
+    if (currentTime + 10000 < meta.totalTime) {
+      goto(currentTime + 10000);
+    } else {
+      goto(meta.totalTime);
+    }
   };
 
   onMount(() => {
@@ -258,68 +286,48 @@
       <span class="rr-timeline__time">{formatTime(meta.totalTime)}</span>
     </div>
     <div class="rr-controller__btns">
-      <div class="rr-controler-btn__left">
+      <div class="rr-controller-btn__left">
         <button on:click={toggle}>
           {#if playerState === 'playing'}
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 48 48"
-              xmlns="http://www.w3.org/2000/svg"
-              ><g id="Play"
-                ><path
-                  d="m37.324 20.026-22-12.412a4.685 4.685 0 0 0 -4.711.036 4.528 4.528 0 0 0 -2.28 3.938v24.824a4.528 4.528 0 0 0 2.28 3.938 4.687 4.687 0 0 0 4.711.036l22-12.412a4.543 4.543 0 0 0 0-7.948z"
-                /></g
-              ></svg
-            >
+            {@html btnPlaying}
           {:else}
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clip-path="url(#clip0_908_391)">
-                <path d="M3 22H9V2H3V22ZM15 2V22H21V2H15Z" fill="black" />
-              </g>
-              <defs>
-                <clipPath id="clip0_908_391">
-                  <rect width="24" height="24" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
+            {@html btnPause}
           {/if}
         </button>
+        <div class="rr-time">
+          {formatTime(currentTime)} / {formatTime(meta.totalTime)}
+        </div>
+        <button class="rr-button-rewind" on:click={handleRewindTime}>
+          <span>10s</span>
+          &nbsp;
+          {@html btnRewind}
+        </button>
+        <button class="rr-button-forward" on:click={handleForwardTime}>
+          {@html btnForward}
+          &nbsp;
+          <span>10s</span>
+        </button>
       </div>
-      <div class="rr-controler-btn__right">
-        {#each speedOption as s}
-          <button
-            class:active={s === speed && speedState !== 'skipping'}
-            on:click={() => setSpeed(s)}
-          >
-            {s}x
-          </button>
-        {/each}
+      <div class="rr-controller-btn__right">
+        {#if activeSpeed}
+          <div class="rr-list-speed">
+            {#each speedOption as s}
+              <button
+                class:active={s === speed && speedState !== 'skipping'}
+                on:click={() => setSpeed(s)}
+              >
+                {s}x
+              </button>
+            {/each}
+          </div>
+        {/if}
+
+        <div class="rr-speed-wrapper" on:click={() => toggleOptionsPopup()}>
+          {speed}x Speed
+        </div>
         <div class="rr-fullscreen" on:click={() => dispatch('fullscreen')}>
           <button>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><g id="Layer_6" data-name="Layer 6"
-                ><path
-                  d="m21 9a1 1 0 0 1 -1-1v-4h-4a1 1 0 0 1 0-2h4a2 2 0 0 1 2 2v4a1 1 0 0 1 -1 1z"
-                /><path
-                  d="m20 22h-4a1 1 0 0 1 0-2h4v-4a1 1 0 0 1 2 0v4a2 2 0 0 1 -2 2z"
-                /><path
-                  d="m8 22h-4a2 2 0 0 1 -2-2v-4a1 1 0 0 1 2 0v4h4a1 1 0 0 1 0 2z"
-                /><path
-                  d="m3 9a1 1 0 0 1 -1-1v-4a2 2 0 0 1 2-2h4a1 1 0 0 1 0 2h-4v4a1 1 0 0 1 -1 1z"
-                /></g
-              ></svg
-            >
+            {@html btnFullscreen}
           </button>
           <span>Fullscreen</span>
         </div>
@@ -329,6 +337,7 @@
           disabled={false}
           label="skip inactive"
         />
+        <div class="rr-more"></div>
       </div>
     </div>
   </div>
@@ -397,7 +406,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 13px;
+    background-color: #303335;
+    color: #fff;
+    height: 44px;
+    font-size: 14px;
   }
 
   .rr-controller__btns button {
@@ -409,23 +421,31 @@
     justify-content: center;
     background: none;
     border: none;
-    border-radius: 50%;
+    border-radius: 8px;
     cursor: pointer;
   }
 
-  .rr-controller__btns button:active {
-    background: #e0e1fe;
+  .rr-controller__btns button.active {
+    background-color: #f1f1f1;
   }
 
-  .rr-controller__btns button.active {
+  .rr-controller__btns .rr-list-speed button:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* .rr-controller__btns button.active {
     color: #fff;
     background: #5f6dc5;
-  }
+  } */
 
   .rr-controller__btns button:disabled {
     cursor: not-allowed;
   }
-  .rr-controler-btn__right {
+  .rr-controller-btn__left {
+    display: flex;
+  }
+
+  .rr-controller-btn__right {
     display: flex;
     align-items: center;
   }
@@ -436,5 +456,55 @@
     align-items: center;
     margin-right: 8px;
     cursor: pointer;
+  }
+
+  .rr-speed-wrapper {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .rr-list-speed {
+    position: absolute;
+    background-color: #fff;
+    bottom: 36px;
+    border-radius: 8px;
+    padding: 8px, 0px, 8px, 0px;
+    z-index: 2;
+    box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
+  }
+
+  .rr-button-rewind,
+  .rr-button-forward {
+    width: auto !important;
+  }
+
+  .rr-button-rewind {
+    margin-right: 8px;
+  }
+
+  .rr-button-rewind span {
+    margin: 0 8px;
+    color: white;
+  }
+  .rr-button-forward span {
+    margin: 0 8px;
+    color: white;
+  }
+
+  /* .rr-button-forward,
+  .rr-svg-rewind {
+    transform: scale(1.8) !important;
+    background-color: red;
+    color: red;
+  } */
+
+  /* times */
+  .rr-time {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 4px;
   }
 </style>
