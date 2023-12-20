@@ -15,10 +15,13 @@
   import { formatTime } from './utils';
   import Switch from './components/Switch.svelte';
   import {
+    MobileVerticalDotsMajor,
     btnForward,
     btnFullscreen,
+    btnNext,
     btnPause,
     btnPlaying,
+    btnPrevious,
     btnRewind,
   } from './constants/buttons.const';
   const dispatch = createEventDispatcher();
@@ -31,6 +34,10 @@
   export let speed = speedOption.length ? speedOption[0] : 1;
   export let tags: Record<string, string> = {};
   export let activeSpeed: boolean = false;
+  export let onPrevious: () => void = () => {};
+  export let onNext: () => void = () => {};
+  let disablePrevious: boolean = false;
+  let disableNext: boolean = false;
 
   let currentTime = 0;
   $: {
@@ -192,11 +199,11 @@
     skipInactive = !skipInactive;
   };
 
-  export const toggleOptionsPopup = () => {
+  const toggleOptionsPopup = () => {
     activeSpeed = !activeSpeed;
   };
 
-  export const handleRewindTime = () => {
+  const handleRewindTime = () => {
     if (currentTime - 10000 > 0) {
       goto(currentTime - 10000);
     } else {
@@ -204,12 +211,33 @@
     }
   };
 
-  export const handleForwardTime = () => {
+  const handleForwardTime = () => {
     if (currentTime + 10000 < meta.totalTime) {
       goto(currentTime + 10000);
     } else {
       goto(meta.totalTime);
     }
+  };
+
+  const handlePrevious = () => {
+    if (disablePrevious) {
+      return;
+    }
+    onPrevious();
+  };
+
+  const handleNext = () => {
+    if (disableNext) {
+      return;
+    }
+    onNext();
+  };
+
+  export const toggleDisablePrevious = (status: boolean) => {
+    disablePrevious = status;
+  };
+  export const toggleDisableNext = (status: boolean) => {
+    disableNext = status;
   };
 
   onMount(() => {
@@ -297,15 +325,41 @@
         <div class="rr-time">
           {formatTime(currentTime)} / {formatTime(meta.totalTime)}
         </div>
-        <button class="rr-button-rewind" on:click={handleRewindTime}>
+        <button
+          class="rr-btn-common-action rr-button-rewind"
+          on:click={handleRewindTime}
+        >
           <span>10s</span>
           &nbsp;
           {@html btnRewind}
         </button>
-        <button class="rr-button-forward" on:click={handleForwardTime}>
+        <button
+          class="rr-btn-common-action rr-button-forward"
+          on:click={handleForwardTime}
+        >
           {@html btnForward}
           &nbsp;
           <span>10s</span>
+        </button>
+        <button
+          class="rr-btn-common-action rr-button-previous {disablePrevious
+            ? 'disable'
+            : ''}"
+          on:click={handlePrevious}
+        >
+          <span>Previous</span>
+          &nbsp;
+          {@html btnPrevious}
+        </button>
+        <button
+          class="rr-btn-common-action rr-button-next {disableNext
+            ? 'disable'
+            : ''}"
+          on:click={handleNext}
+        >
+          {@html btnNext}
+          &nbsp;
+          <span>Next</span>
         </button>
       </div>
       <div class="rr-controller-btn__right">
@@ -337,7 +391,11 @@
           disabled={false}
           label="skip inactive"
         />
-        <div class="rr-more"></div>
+        <div class="rr-more">
+          <button class="rr-more-button">
+            {@html MobileVerticalDotsMajor}
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -410,6 +468,7 @@
     color: #fff;
     height: 44px;
     font-size: 14px;
+    padding: 0 8px;
   }
 
   .rr-controller__btns button {
@@ -443,11 +502,13 @@
   }
   .rr-controller-btn__left {
     display: flex;
+    align-items: center;
   }
 
   .rr-controller-btn__right {
     display: flex;
     align-items: center;
+    position: relative;
   }
 
   .rr-fullscreen {
@@ -467,6 +528,7 @@
     position: absolute;
     background-color: #fff;
     bottom: 36px;
+    left: 18px;
     border-radius: 8px;
     padding: 8px, 0px, 8px, 0px;
     z-index: 2;
@@ -475,36 +537,64 @@
     -moz-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
   }
 
-  .rr-button-rewind,
-  .rr-button-forward {
+  /* button actions */
+  /* button skip 10s */
+
+  .rr-btn-common-action {
     width: auto !important;
+    height: 26px !important;
+    padding: 2px 4px !important;
+  }
+
+  .rr-btn-common-action:hover {
+    background-color: #4a4a4a;
+  }
+
+  .rr-btn-common-action.disable {
+    opacity: 0.8;
+    cursor: default;
+  }
+
+  .rr-btn-common-action.disable:hover {
+    background-color: initial;
+  }
+
+  .rr-btn-common-action span {
+    color: white;
   }
 
   .rr-button-rewind {
-    margin-right: 8px;
+    margin-left: 8px;
+    margin-right: 4px;
+  }
+
+  .rr-button-forward {
   }
 
   .rr-button-rewind span {
-    margin: 0 8px;
-    color: white;
+    margin-right: 4px;
   }
   .rr-button-forward span {
-    margin: 0 8px;
-    color: white;
+    margin-left: 4px;
   }
 
-  /* .rr-button-forward,
-  .rr-svg-rewind {
-    transform: scale(1.8) !important;
-    background-color: red;
-    color: red;
-  } */
-
+  /* button previous & next */
+  .rr-button-previous {
+    margin-left: 12px;
+  }
+  .rr-button-next {
+    margin-left: 4px;
+  }
   /* times */
   .rr-time {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 4px;
+  }
+
+  /* more */
+  .rr-more-button {
+    border-radius: 1px solid #fff;
   }
 </style>

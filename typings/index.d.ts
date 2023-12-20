@@ -13,6 +13,8 @@ export type RRwebPlayerOptions = {
     speedOption?: number[];
     showController?: boolean;
     tags?: Record<string, string>;
+    onPrevious?: void;
+    onNext?: void;
   } & Partial<playerConfig>;
 };
 
@@ -33,4 +35,6 @@ export default class rrwebPlayer extends SvelteComponent {
   play: () => void;
   pause: () => void;
   goto: (timeOffset: number, play?: boolean) => void;
+  toggleDisablePrevious: () => void;
+  toggleDisableNext: () => void;
 }
