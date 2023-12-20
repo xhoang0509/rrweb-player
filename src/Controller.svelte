@@ -15,6 +15,7 @@
   import { formatTime } from './utils';
   import Switch from './components/Switch.svelte';
   import {
+    IconAddTag,
     MobileVerticalDotsMajor,
     btnForward,
     btnFullscreen,
@@ -38,7 +39,7 @@
   export let onNext: () => void = () => {};
   let disablePrevious: boolean = false;
   let disableNext: boolean = false;
-
+  let more: boolean = false;
   let currentTime = 0;
   $: {
     dispatch('ui-update-current-time', { payload: currentTime });
@@ -240,6 +241,10 @@
     disableNext = status;
   };
 
+  const toggleMore = () => {
+    more = !more;
+  };
+
   onMount(() => {
     playerState = replayer.service.state.value as typeof playerState;
     speedState = replayer.speedService.state.value as typeof speedState;
@@ -392,9 +397,23 @@
           label="skip inactive"
         />
         <div class="rr-more">
-          <button class="rr-more-button">
+          <button
+            class="rr-more-button rr-btn-common-action"
+            on:click={toggleMore}
+          >
             {@html MobileVerticalDotsMajor}
           </button>
+          {#if more}
+            <div class="rr-more-popup">
+              <div class="rr-more-add-tag">
+                <span>{@html IconAddTag}</span>
+                <span>Add tags</span>
+              </div>
+              <div class="rr-more-autonext">
+                <span>Autonext</span>
+              </div>
+            </div>
+          {/if}
         </div>
       </div>
     </div>
@@ -522,6 +541,7 @@
   .rr-speed-wrapper {
     cursor: pointer;
     user-select: none;
+    margin-right: 8px;
   }
 
   .rr-list-speed {
@@ -594,7 +614,36 @@
   }
 
   /* more */
+  .rr-more {
+    position: relative;
+  }
   .rr-more-button {
-    border-radius: 1px solid #fff;
+    border: 1px solid #fff !important;
+  }
+  .rr-more-popup {
+    position: absolute;
+    bottom: calc(100% + 4px);
+    right: 0;
+    background-color: #fff;
+    color: #000;
+    padding: 8px, 0px, 8px, 0px;
+    border-radius: 8px;
+    box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
+  }
+  .rr-more-add-tag,
+  .rr-more-autonext {
+    width: 114px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .rr-more-add-tag > span:first-child {
+    padding-top: 7px !important;
+    padding-top: 4px;
   }
 </style>
