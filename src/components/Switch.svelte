@@ -3,11 +3,12 @@
   export let checked: boolean;
   export let id: string;
   export let label: string;
+  export let size: string = 'normal';
 </script>
 
 <div class="switch" class:disabled>
   <input type="checkbox" {id} bind:checked {disabled} />
-  <label for={id} />
+  <label for={id} class={size} />
   <span class="label">{label}</span>
 </div>
 
@@ -43,6 +44,16 @@
     cursor: not-allowed;
   }
 
+  .switch label {
+    display: flex;
+    align-items: center;
+  }
+
+  .switch:has(label.small) span.label {
+    margin-left: 2px;
+    user-select: none;
+  }
+
   .switch label:before {
     content: '';
     position: absolute;
@@ -52,6 +63,11 @@
     transition: background 0.1s ease;
     background: rgba(73, 80, 246, 0.5);
     border-radius: 50px;
+  }
+
+  .switch label.small:before {
+    width: 1.6em;
+    height: 0.8em;
   }
 
   .switch label:after {
@@ -66,6 +82,11 @@
     background: #fcfff4;
     animation: switch-off 0.2s ease-out;
     z-index: 2;
+  }
+
+  .switch label.small:after {
+    width: 0.8em;
+    height: 0.8em;
   }
 
   .switch input[type='checkbox']:checked + label:before {

@@ -40,6 +40,8 @@
   let disablePrevious: boolean = false;
   let disableNext: boolean = false;
   let more: boolean = false;
+  let autonext: boolean = false;
+  let size: string = 'small';
   let currentTime = 0;
   $: {
     dispatch('ui-update-current-time', { payload: currentTime });
@@ -394,7 +396,7 @@
           id="skip"
           bind:checked={skipInactive}
           disabled={false}
-          label="skip inactive"
+          label="Skip inactive"
         />
         <div class="rr-more">
           <button
@@ -410,7 +412,14 @@
                 <span>Add tags</span>
               </div>
               <div class="rr-more-autonext">
-                <span>Autonext</span>
+                <Switch
+                  id="autonext"
+                  bind:checked={autonext}
+                  bind:size
+                  disabled={false}
+                  label="Autoplay"
+                />
+                <!-- <span>Autonext</span> -->
               </div>
             </div>
           {/if}
@@ -427,8 +436,8 @@
     background: #fff;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: space-between;
+    justify-content: unset;
+    align-items: unset;
     border-radius: 0 0 5px 5px;
   }
 
@@ -436,6 +445,7 @@
     width: 80%;
     display: flex;
     align-items: center;
+    flex: 1;
   }
 
   .rr-timeline__time {
@@ -480,6 +490,7 @@
   }
 
   .rr-controller__btns {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -643,7 +654,7 @@
   }
 
   .rr-more-add-tag > span:first-child {
-    padding-top: 7px !important;
-    padding-top: 4px;
+    padding-top: 4px !important;
+    padding-right: 4px;
   }
 </style>
