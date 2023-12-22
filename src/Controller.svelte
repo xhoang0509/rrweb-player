@@ -280,6 +280,13 @@
     if (autoPlay) {
       replayer.play();
     }
+
+    const autoNextCache =
+      JSON.parse(localStorage.getItem('mida-auto-next-session')) || '';
+
+    if (autoNextCache) {
+      autonext = autoNextCache;
+    }
   });
 
   afterUpdate(() => {
