@@ -70,13 +70,13 @@
     height: 0.8em;
   }
 
-  .switch label:after {
+  .switch label:not(.small):after {
     content: '';
     position: absolute;
-    width: 1em;
-    height: 1em;
+    width: 0.6em;
+    height: 0.6em;
     border-radius: 50px;
-    left: 0;
+    left: 5px;
     transition: all 0.2s ease;
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
     background: #fcfff4;
@@ -85,8 +85,14 @@
   }
 
   .switch label.small:after {
-    width: 0.8em;
-    height: 0.8em;
+    content: url('./icons/Vector.svg');
+    position: absolute;
+    border-radius: 50px;
+    left: 5px;
+    transition: all 0.2s ease;
+    animation: switch-off 0.2s ease-out;
+    z-index: 2;
+    top: -2px;
   }
 
   .switch input[type='checkbox']:checked + label:before {
@@ -95,6 +101,10 @@
 
   .switch input[type='checkbox']:checked + label:after {
     animation: switch-on 0.2s ease-out;
-    left: 1.1em;
+    left: 1.2em;
+  }
+  .switch input[type='checkbox']:checked + label.small:after {
+    animation: switch-on 0.2s ease-out;
+    left: 1em;
   }
 </style>

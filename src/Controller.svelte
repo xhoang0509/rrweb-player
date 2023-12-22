@@ -37,6 +37,7 @@
   export let activeSpeed: boolean = false;
   export let onPrevious: () => void = () => {};
   export let onNext: () => void = () => {};
+  export let onAddTag: () => void = () => {};
   let disablePrevious: boolean = false;
   let disableNext: boolean = false;
   let more: boolean = false;
@@ -407,7 +408,7 @@
           </button>
           {#if more}
             <div class="rr-more-popup">
-              <div class="rr-more-add-tag">
+              <div class="rr-more-add-tag" on:click={onAddTag}>
                 <span>{@html IconAddTag}</span>
                 <span>Add tags</span>
               </div>
@@ -419,7 +420,6 @@
                   disabled={false}
                   label="Autoplay"
                 />
-                <!-- <span>Autonext</span> -->
               </div>
             </div>
           {/if}
@@ -651,6 +651,10 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+  }
+
+  .rr-more-add-tag {
+    user-select: none;
   }
 
   .rr-more-add-tag > span:first-child {

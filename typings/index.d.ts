@@ -15,6 +15,7 @@ export type RRwebPlayerOptions = {
     tags?: Record<string, string>;
     onPrevious?: void;
     onNext?: void;
+    onAddTag?: void;
   } & Partial<playerConfig>;
 };
 

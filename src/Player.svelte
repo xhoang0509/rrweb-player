@@ -23,6 +23,7 @@
   export let tags: Record<string, string> = {};
   export let onPrevious: () => void = () => {};
   export let onNext: () => void = () => {};
+  export let onAddTag: () => void = () => {};
   let replayer: Replayer;
 
   export const getMirror = () => replayer.getMirror();
@@ -200,6 +201,7 @@
       {tags}
       {onPrevious}
       {onNext}
+      {onAddTag}
       on:fullscreen={() => toggleFullscreen()}
     />
   {/if}
