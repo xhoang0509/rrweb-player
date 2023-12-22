@@ -622,6 +622,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 4px;
+    margin-left: 12px;
   }
 
   /* more */
