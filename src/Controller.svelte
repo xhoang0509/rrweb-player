@@ -332,9 +332,9 @@
       <div class="rr-controller-btn__left">
         <button on:click={toggle}>
           {#if playerState === 'playing'}
-            {@html btnPlaying}
-          {:else}
             {@html btnPause}
+          {:else}
+            {@html btnPlaying}
           {/if}
         </button>
         <div class="rr-time">

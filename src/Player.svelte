@@ -60,7 +60,7 @@
     const widthScale = width / frameDimension.width;
     const heightScale = height / frameDimension.height;
     el.style.transform =
-      `scale(${Math.min(widthScale, heightScale, 1)})` +
+      `scale(${Math.min(widthScale, heightScale, 1) - 0.1})` +
       'translate(-50%, -50%)';
   };
 
