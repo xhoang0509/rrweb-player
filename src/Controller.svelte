@@ -248,6 +248,12 @@
     more = !more;
   };
 
+  const handleFullscreen = () => {
+    dispatch('fullscreen');
+    activeSpeed = false;
+    more = false;
+  };
+
   onMount(() => {
     playerState = replayer.service.state.value as typeof playerState;
     speedState = replayer.speedService.state.value as typeof speedState;
@@ -394,7 +400,7 @@
         <div class="rr-speed-wrapper" on:click={() => toggleOptionsPopup()}>
           {speed}x Speed
         </div>
-        <div class="rr-fullscreen" on:click={() => dispatch('fullscreen')}>
+        <div class="rr-fullscreen" on:click={() => handleFullscreen()}>
           <button>
             {@html btnFullscreen}
           </button>
@@ -582,10 +588,15 @@
     width: auto !important;
     height: 26px !important;
     padding: 2px 4px !important;
+    background-color: #373a3e !important;
   }
 
   .rr-btn-common-action:hover {
-    background-color: #4a4a4a;
+    background-color: #4a4a4a !important;
+  }
+
+  .rr-btn-common-action:active {
+    background-color: #616161 !important;
   }
 
   .rr-btn-common-action.disable {
@@ -629,7 +640,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 4px;
-    margin-left: 12px;
+    margin-left: 8px;
   }
 
   /* more */
