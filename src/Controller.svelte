@@ -562,23 +562,43 @@
     cursor: pointer;
   }
 
+  .rr-fullscreen:hover {
+    color: #e3e3e3;
+  }
+
+  .rr-fullscreen:hover button {
+    opacity: 0.9;
+  }
+
+  .rr-fullscreen:active {
+    color: #b5b5b5;
+  }
+
   .rr-speed-wrapper {
     cursor: pointer;
     user-select: none;
     margin-right: 8px;
   }
 
+  .rr-speed-wrapper:hover {
+    opacity: 0.8;
+  }
+
   .rr-list-speed {
     position: absolute;
     background-color: #fff;
     bottom: 36px;
-    left: 18px;
+    left: 14px;
     border-radius: 8px;
     padding: 8px, 0px, 8px, 0px;
     z-index: 2;
     box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
+  }
+
+  .rr-list-speed button {
+    width: 48px;
   }
 
   /* button actions */
@@ -661,15 +681,21 @@
     box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
+    padding: 8px 0px;
   }
   .rr-more-add-tag,
   .rr-more-autonext {
     width: 114px;
-    height: 36px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+  }
+
+  .rr-more-add-tag:hover,
+  .rr-more-autonext:hover {
+    background-color: #f7f7f7;
   }
 
   .rr-more-add-tag {
@@ -678,6 +704,10 @@
 
   .rr-more-add-tag > span:first-child {
     padding-top: 4px !important;
-    padding-right: 4px;
+    padding-right: 8px;
+  }
+
+  .rr-more-add-tag > span:last-child {
+    padding-right: 8px;
   }
 </style>

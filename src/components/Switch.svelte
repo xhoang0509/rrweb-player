@@ -78,7 +78,7 @@
     height: 1em;
     left: 0.1em;
     transition: background 0.1s ease;
-    background: rgba(73, 80, 246, 0.5);
+    background: #bdc3c7;
     border-radius: 50px;
   }
 
@@ -109,7 +109,7 @@
     transition: all 0.2s ease;
     animation: switch-off 0.2s ease-out;
     z-index: 2;
-    top: -2px;
+    top: -30%;
   }
 
   .switch input[type='checkbox']:checked + label:before {
