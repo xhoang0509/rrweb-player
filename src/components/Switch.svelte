@@ -42,6 +42,7 @@
 
   .label {
     margin: 0 8px;
+    font-size: 13px;
   }
 
   .switch input[type='checkbox'] {

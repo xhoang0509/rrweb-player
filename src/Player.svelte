@@ -124,6 +124,20 @@
     controller.toggleDisableNext(status);
   };
 
+  const hiddenController = () => {
+    const controller = document.querySelector('.rr-controller') as HTMLElement;
+    if (controller) {
+      controller.style.display = 'none';
+    }
+  };
+
+  const unhiddenController = () => {
+    const controller = document.querySelector('.rr-controller') as HTMLElement;
+    if (controller) {
+      controller.style.display = 'block';
+    }
+  };
+
   onMount(() => {
     // runtime type check
     if (speedOption !== undefined && typeOf(speedOption) !== 'array') {
@@ -167,6 +181,7 @@
           _height = height;
           width = player.offsetWidth;
           height = player.offsetHeight;
+          hiddenController();
           updateScale(replayer.wrapper, {
             width: replayer.iframe.offsetWidth,
             height: replayer.iframe.offsetHeight,
@@ -175,6 +190,7 @@
       } else {
         width = _width;
         height = _height;
+        unhiddenController();
         updateScale(replayer.wrapper, {
           width: replayer.iframe.offsetWidth,
           height: replayer.iframe.offsetHeight,
@@ -196,6 +212,7 @@
       {replayer}
       {showController}
       {autoPlay}
+      {speed}
       {speedOption}
       {skipInactive}
       {tags}
@@ -214,7 +231,7 @@
     position: relative;
     background: white;
     float: left;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 24px 48px rgba(17, 16, 62, 0.12);
     border: 2px solid #ccc;
   }

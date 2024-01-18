@@ -560,6 +560,7 @@
     align-items: center;
     margin-right: 8px;
     cursor: pointer;
+    font-size: 13px;
   }
 
   .rr-fullscreen:hover {
@@ -574,14 +575,19 @@
     color: #b5b5b5;
   }
 
+  .rr-fullscreen:active button {
+    opacity: 0.8;
+  }
+
   .rr-speed-wrapper {
     cursor: pointer;
     user-select: none;
     margin-right: 8px;
+    font-size: 13px;
   }
 
   .rr-speed-wrapper:hover {
-    opacity: 0.8;
+    color: #e3e3e3;
   }
 
   .rr-list-speed {
@@ -599,6 +605,7 @@
 
   .rr-list-speed button {
     width: 48px;
+    font-size: 13px;
   }
 
   /* button actions */
@@ -606,9 +613,10 @@
 
   .rr-btn-common-action {
     width: auto !important;
-    height: 26px !important;
+    height: 28px !important;
     padding: 2px 4px !important;
     background-color: #373a3e !important;
+    font-size: 13px;
   }
 
   .rr-btn-common-action:hover {
@@ -625,7 +633,7 @@
   }
 
   .rr-btn-common-action.disable:hover {
-    background-color: initial;
+    background-color: #373a3e !important;
   }
 
   .rr-btn-common-action span {
@@ -651,8 +659,14 @@
   .rr-button-previous {
     margin-left: 12px;
   }
+  .rr-button-previous span {
+    padding-right: 4px;
+  }
   .rr-button-next {
     margin-left: 4px;
+  }
+  .rr-button-next span {
+    padding-left: 4px;
   }
   /* times */
   .rr-time {
@@ -661,6 +675,7 @@
     justify-content: center;
     margin: 0 4px;
     margin-left: 8px;
+    font-size: 13px;
   }
 
   /* more */
@@ -682,6 +697,7 @@
     -webkit-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
     padding: 8px 0px;
+    font-size: 14px;
   }
   .rr-more-add-tag,
   .rr-more-autonext {
@@ -691,11 +707,13 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    font-size: 13px;
   }
 
   .rr-more-add-tag:hover,
   .rr-more-autonext:hover {
     background-color: #f7f7f7;
+    color: #202223;
   }
 
   .rr-more-add-tag {
