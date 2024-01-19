@@ -205,6 +205,9 @@
 
   const toggleOptionsPopup = () => {
     activeSpeed = !activeSpeed;
+    if (more) {
+      more = !more;
+    }
   };
 
   const handleRewindTime = () => {
@@ -246,6 +249,9 @@
 
   const toggleMore = () => {
     more = !more;
+    if (activeSpeed) {
+      activeSpeed = !activeSpeed;
+    }
   };
 
   const handleFullscreen = () => {
@@ -293,6 +299,22 @@
     if (autoNextCache) {
       autonext = autoNextCache;
     }
+
+    // hidden speedOption & more popup when click overflow
+    document.addEventListener('DOMContentLoaded', function () {
+      const btnActiveListSpeed = document.querySelector('.rr-speed-wrapper');
+      const btnActiveMorePopup = document.querySelector('.rr-more');
+
+      document.addEventListener('click', function (event) {
+        console.log('dom click');
+        if (activeSpeed && !btnActiveListSpeed.contains(event.target as Node)) {
+          activeSpeed = false;
+        }
+        if (more && !btnActiveMorePopup.contains(event.target as Node)) {
+          more = false;
+        }
+      });
+    });
   });
 
   afterUpdate(() => {
@@ -698,6 +720,7 @@
     -moz-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
     padding: 8px 0px;
     font-size: 14px;
+    z-index: 10;
   }
   .rr-more-add-tag,
   .rr-more-autonext {
