@@ -534,6 +534,7 @@
     height: 44px;
     font-size: 14px;
     padding: 0 8px;
+    border-radius: 0 0 8px 8px;
   }
 
   .rr-controller__btns button {

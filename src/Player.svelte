@@ -124,20 +124,6 @@
     controller.toggleDisableNext(status);
   };
 
-  const hiddenController = () => {
-    const controller = document.querySelector('.rr-controller') as HTMLElement;
-    if (controller) {
-      controller.style.display = 'none';
-    }
-  };
-
-  const unhiddenController = () => {
-    const controller = document.querySelector('.rr-controller') as HTMLElement;
-    if (controller) {
-      controller.style.display = 'block';
-    }
-  };
-
   onMount(() => {
     // runtime type check
     if (speedOption !== undefined && typeOf(speedOption) !== 'array') {
@@ -181,7 +167,8 @@
           _height = height;
           width = player.offsetWidth;
           height = player.offsetHeight;
-          hiddenController();
+          // hidden controller
+          showController = false;
           updateScale(replayer.wrapper, {
             width: replayer.iframe.offsetWidth,
             height: replayer.iframe.offsetHeight,
@@ -190,7 +177,8 @@
       } else {
         width = _width;
         height = _height;
-        unhiddenController();
+        // unhidden controller
+        showController = true;
         updateScale(replayer.wrapper, {
           width: replayer.iframe.offsetWidth,
           height: replayer.iframe.offsetHeight,
