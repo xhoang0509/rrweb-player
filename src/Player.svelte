@@ -9,6 +9,7 @@
     isFullscreen,
     onFullscreenChange,
     typeOf,
+    setCSS,
   } from './utils';
   import Controller from './Controller.svelte';
 
@@ -63,6 +64,23 @@
     el.style.transform =
       `scale(${Math.min(widthScale, heightScale, 1) - 0.1})` +
       'translate(-50%, -50%)';
+  };
+
+  const fixedController = (el: HTMLElement) => {
+    const styles = {
+      position: 'fixed',
+      bottom: 0,
+      left: 0,
+      right: 0,
+    };
+    setCSS(el, styles);
+  };
+
+  const resetFixedController = (el: HTMLElement) => {
+    const styles = {
+      position: 'relative',
+    };
+    setCSS(el, styles);
   };
 
   export const triggerResize = () => {
@@ -165,28 +183,27 @@
     });
 
     fullscreenListener = onFullscreenChange(() => {
+      const controllerWrapper = document.querySelector('.rr-controller__btns');
       if (isFullscreen()) {
         setTimeout(() => {
           _width = width;
           _height = height;
           width = player.offsetWidth;
           height = player.offsetHeight;
-          // hidden controller
-          showController = false;
           updateScale(replayer.wrapper, {
             width: replayer.iframe.offsetWidth,
             height: replayer.iframe.offsetHeight,
           });
+          fixedController(controllerWrapper as HTMLElement);
         }, 0);
       } else {
         width = _width;
         height = _height;
-        // unhidden controller
-        showController = true;
         updateScale(replayer.wrapper, {
           width: replayer.iframe.offsetWidth,
           height: replayer.iframe.offsetHeight,
         });
+        resetFixedController(controllerWrapper as HTMLElement);
       }
     });
   });
@@ -225,7 +242,7 @@
     float: left;
     border-radius: 8px;
     box-shadow: 0 24px 48px rgba(17, 16, 62, 0.12);
-    border: 2px solid #ccc;
+    /* border: 2px solid #ccc; */
   }
 
   .rr-player__frame {

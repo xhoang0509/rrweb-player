@@ -610,6 +610,10 @@
     color: #e3e3e3;
   }
 
+  .rr-speed-wrapper:active {
+    color: #b5b5b5;
+  }
+
   .rr-list-speed {
     position: absolute;
     background-color: #fff;

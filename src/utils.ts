@@ -133,3 +133,11 @@ export function typeOf(
   };
   return map[toString.call(obj)];
 }
+
+export function setCSS(element: HTMLElement, styles: any) {
+  for (const property in styles) {
+    if (Object.hasOwnProperty.call(styles, property)) {
+      element.style[property] = styles[property];
+    }
+  }
+}
