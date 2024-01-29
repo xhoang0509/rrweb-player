@@ -37,5 +37,9 @@
     window.$c = component;
     component.addEventListener('finish', () => console.log('finish'));
     // component.addEventListener('ui-update-progress', console.log);
+
+    document.onclick = function (e) {
+      component.hiddenPopup(event);
+    };
   </script>
 </html>

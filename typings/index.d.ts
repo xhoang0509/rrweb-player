@@ -38,4 +38,7 @@ export default class rrwebPlayer extends SvelteComponent {
   goto: (timeOffset: number, play?: boolean) => void;
   toggleDisablePrevious: () => void;
   toggleDisableNext: () => void;
+
+  // hidden popup: speed, more
+  hiddenPopup: () => void;
 }

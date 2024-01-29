@@ -40,6 +40,7 @@
     toggleSkipInactive: () => void;
     toggleDisablePrevious: (status: boolean) => void;
     toggleDisableNext: (status: boolean) => void;
+    hiddenPopup: (event: any) => void;
   } & Controller;
 
   let style: string;
@@ -122,6 +123,9 @@
   };
   export const toggleDisableNext = (status: boolean) => {
     controller.toggleDisableNext(status);
+  };
+  export const hiddenPopup = (event: any) => {
+    controller.hiddenPopup(event);
   };
 
   onMount(() => {

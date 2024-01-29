@@ -196,7 +196,7 @@
     if (needFreeze) {
       replayer.play(currentTime);
     }
-    toggleOptionsPopup();
+    activeSpeed = false;
   };
 
   export const toggleSkipInactive = () => {
@@ -260,6 +260,19 @@
     more = false;
   };
 
+  // hidden speedOption & more popup when click overflow
+  export const hiddenPopup = (event: any) => {
+    const btnActiveListSpeed = document.querySelector('.rr-speed-wrapper');
+    const btnActiveMorePopup = document.querySelector('.rr-more');
+
+    if (activeSpeed && !btnActiveListSpeed.contains(event.target as Node)) {
+      activeSpeed = false;
+    }
+    if (more && !btnActiveMorePopup.contains(event.target as Node)) {
+      more = false;
+    }
+  };
+
   onMount(() => {
     playerState = replayer.service.state.value as typeof playerState;
     speedState = replayer.speedService.state.value as typeof speedState;
@@ -299,22 +312,6 @@
     if (autoNextCache) {
       autonext = autoNextCache;
     }
-
-    // hidden speedOption & more popup when click overflow
-    document.addEventListener('DOMContentLoaded', function () {
-      const btnActiveListSpeed = document.querySelector('.rr-speed-wrapper');
-      const btnActiveMorePopup = document.querySelector('.rr-more');
-
-      document.addEventListener('click', function (event) {
-        console.log('dom click');
-        if (activeSpeed && !btnActiveListSpeed.contains(event.target as Node)) {
-          activeSpeed = false;
-        }
-        if (more && !btnActiveMorePopup.contains(event.target as Node)) {
-          more = false;
-        }
-      });
-    });
   });
 
   afterUpdate(() => {
@@ -738,6 +735,10 @@
   .rr-more-autonext:hover {
     background-color: #f7f7f7;
     color: #202223;
+  }
+  .rr-more-add-tag:active,
+  .rr-more-autonext:active {
+    background-color: #f1f1f1;
   }
 
   .rr-more-add-tag {

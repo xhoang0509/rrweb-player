@@ -1,6 +1,6 @@
 {
   "name": "@bss-sbc/rrweb-player",
-  "version": "2.10.5",
+  "version": "2.10.9",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-node-resolve": "^7.0.0",
