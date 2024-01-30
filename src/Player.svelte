@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
   import { Replayer, unpack } from 'rrweb';
   import type { eventWithTime } from 'rrweb/typings/types';
-  import {
-    inlineCss,
-    openFullscreen,
-    exitFullscreen,
-    isFullscreen,
-    onFullscreenChange,
-    typeOf,
-    setCSS,
-  } from './utils';
+  import { onDestroy, onMount } from 'svelte';
   import Controller from './Controller.svelte';
+  import {
+      exitFullscreen,
+      inlineCss,
+      isFullscreen,
+      onFullscreenChange,
+      openFullscreen,
+      setCSS,
+      typeOf,
+  } from './utils';
 
   export let width: number = 1400;
   export let height: number = 720;
@@ -22,6 +22,7 @@
   export let speed: number = 1;
   export let showController: boolean = true;
   export let tags: Record<string, string> = {};
+  let fullScreenClass: string = '';
   export let onPrevious: () => void = () => {};
   export let onNext: () => void = () => {};
   export let onAddTag: () => void = () => {};
@@ -43,7 +44,6 @@
     toggleDisableNext: (status: boolean) => void;
     hiddenPopup: (event: any) => void;
   } & Controller;
-
   let style: string;
   $: style = inlineCss({
     width: `${width}px`,
@@ -92,7 +92,13 @@
 
   export const toggleFullscreen = () => {
     if (player) {
-      isFullscreen() ? exitFullscreen() : openFullscreen(player);
+      if (isFullscreen()) {
+        fullScreenClass = '';
+        exitFullscreen();
+      } else {
+        openFullscreen(player);
+        fullScreenClass = 'full_screen';
+      }
     }
   };
 
@@ -213,7 +219,7 @@
   });
 </script>
 
-<div class="rr-player" bind:this={player} style={playerStyle}>
+<div class="rr-player {fullScreenClass}" bind:this={player} style={playerStyle}>
   <div class="rr-player__frame" bind:this={frame} {style} />
   {#if replayer}
     <Controller
@@ -225,6 +231,7 @@
       {speedOption}
       {skipInactive}
       {tags}
+      {fullScreenClass}
       {onPrevious}
       {onNext}
       {onAddTag}
@@ -242,7 +249,11 @@
     float: left;
     border-radius: 8px;
     box-shadow: 0 24px 48px rgba(17, 16, 62, 0.12);
-    /* border: 2px solid #ccc; */
+    border: 2px solid #ccc;
+  }
+
+  .rr-player.full_screen {
+    border: unset;
   }
 
   .rr-player__frame {

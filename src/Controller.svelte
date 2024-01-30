@@ -1,30 +1,31 @@
 <script lang="ts">
-  import { EventType } from 'rrweb';
   import type { Replayer } from 'rrweb';
-  import type { playerMetaData } from 'rrweb/typings/types';
+  import { EventType } from 'rrweb';
   import type {
-    PlayerMachineState,
-    SpeedMachineState,
+      PlayerMachineState,
+      SpeedMachineState,
   } from 'rrweb/typings/replay/machine';
+  import type { playerMetaData } from 'rrweb/typings/types';
   import {
-    onMount,
-    onDestroy,
-    createEventDispatcher,
-    afterUpdate,
+      afterUpdate,
+      createEventDispatcher,
+      onDestroy,
+      onMount,
   } from 'svelte';
-  import { formatTime } from './utils';
   import Switch from './components/Switch.svelte';
   import {
-    IconAddTag,
-    MobileVerticalDotsMajor,
-    btnForward,
-    btnFullscreen,
-    btnNext,
-    btnPause,
-    btnPlaying,
-    btnPrevious,
-    btnRewind,
+      IconAddTag,
+      MobileVerticalDotsMajor,
+      btnForward,
+      btnFullscreen,
+      btnMinimize,
+      btnNext,
+      btnPause,
+      btnPlaying,
+      btnPrevious,
+      btnRewind,
   } from './constants/buttons.const';
+  import { formatTime } from './utils';
   const dispatch = createEventDispatcher();
 
   export let replayer: Replayer;
@@ -35,6 +36,7 @@
   export let speed = speedOption.length ? speedOption[0] : 1;
   export let tags: Record<string, string> = {};
   export let activeSpeed: boolean = false;
+  export let fullScreenClass: string;
   export let onPrevious: () => void = () => {};
   export let onNext: () => void = () => {};
   export let onAddTag: () => void = () => {};
@@ -421,7 +423,11 @@
         </div>
         <div class="rr-fullscreen" on:click={() => handleFullscreen()}>
           <button>
-            {@html btnFullscreen}
+            {#if fullScreenClass === 'full_screen'}
+              {@html btnMinimize}
+            {:else}
+              {@html btnFullscreen}
+            {/if}
           </button>
           <span>Fullscreen</span>
         </div>
