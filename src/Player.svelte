@@ -1,16 +1,17 @@
 <script lang="ts">
-  import { Replayer, unpack } from 'rrweb';
+  import { unpack } from 'rrweb';
+  import { Replayer } from '@bss-sbc/rrweb';
   import type { eventWithTime } from 'rrweb/typings/types';
   import { onDestroy, onMount } from 'svelte';
   import Controller from './Controller.svelte';
   import {
-      exitFullscreen,
-      inlineCss,
-      isFullscreen,
-      onFullscreenChange,
-      openFullscreen,
-      setCSS,
-      typeOf,
+    exitFullscreen,
+    inlineCss,
+    isFullscreen,
+    onFullscreenChange,
+    openFullscreen,
+    setCSS,
+    typeOf,
   } from './utils';
 
   export let width: number = 1400;
