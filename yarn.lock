@@ -23,10 +23,19 @@
     "chalk" "^2.0.0"
     "js-tokens" "^4.0.0"
 
-"@bss-sbc/rrweb@^1.0.3":
-  "integrity" "sha512-68ooGuBBZEBLkBqIYXGD1IU0jSkENlONmRQsNxrTcflcWpO62IiyxIVWufrFlbh5VafBZVqXhIyQTMtvkYYQ2w=="
-  "resolved" "https://registry.npmjs.org/@bss-sbc/rrweb/-/rrweb-1.0.3.tgz"
-  "version" "1.0.3"
+"@bss-sbc/rrweb-player@^2.11.4":
+  "integrity" "sha512-bz545hvkq2gpBwUMFL3M07kBJeh/W3jZLV8/skuQQr0lE5fm2jWSzJ7LEpifuheqOsDZA+V7bPBHRrW27j3Xcg=="
+  "resolved" "https://registry.npmjs.org/@bss-sbc/rrweb-player/-/rrweb-player-2.11.4.tgz"
+  "version" "2.11.4"
+  dependencies:
+    "@bss-sbc/rrweb" "^1.0.3"
+    "@tsconfig/svelte" "^1.0.0"
+    "rrweb" "^1.0.1"
+
+"@bss-sbc/rrweb@^1.0.3", "@bss-sbc/rrweb@^1.0.4":
+  "integrity" "sha512-8OH34YWbkuI2C4sIqhfv5oIULNydtjinO95nceRapa4bnQe48ZaAWRd0B+LQnZFxcYmvgm9ZRepK79Bws6X5wA=="
+  "resolved" "https://registry.npmjs.org/@bss-sbc/rrweb/-/rrweb-1.0.4.tgz"
+  "version" "1.0.4"
   dependencies:
     "@types/css-font-loading-module" "0.0.4"
     "@xstate/fsm" "^1.4.0"

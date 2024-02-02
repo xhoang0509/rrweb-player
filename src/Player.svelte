@@ -94,11 +94,9 @@
   export const toggleFullscreen = () => {
     if (player) {
       if (isFullscreen()) {
-        fullScreenClass = '';
         exitFullscreen();
       } else {
         openFullscreen(player);
-        fullScreenClass = 'full_screen';
       }
     }
   };
@@ -190,7 +188,7 @@
     });
 
     fullscreenListener = onFullscreenChange(() => {
-      const controllerWrapper = document.querySelector('.rr-controller__btns');
+      const controllerWrapper = document.querySelector('.rr-controller');
       if (isFullscreen()) {
         setTimeout(() => {
           _width = width;
@@ -211,6 +209,14 @@
           height: replayer.iframe.offsetHeight,
         });
         resetFixedController(controllerWrapper as HTMLElement);
+      }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      if (isFullscreen()) {
+        fullScreenClass = 'full_screen';
+      } else {
+        fullScreenClass = '';
       }
     });
   });

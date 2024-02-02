@@ -331,7 +331,6 @@
 {#if showController}
   <div class="rr-controller">
     <div class="rr-timeline">
-      <span class="rr-timeline__time">{formatTime(currentTime)}</span>
       <div
         class="rr-progress"
         bind:this={progress}
@@ -353,7 +352,6 @@
 
         <div class="rr-progress__handler" style="left: {percentage}" />
       </div>
-      <span class="rr-timeline__time">{formatTime(meta.totalTime)}</span>
     </div>
     <div class="rr-controller__btns">
       <div class="rr-controller-btn__left">
@@ -480,10 +478,9 @@
   }
 
   .rr-timeline {
-    width: 80%;
+    width: 100%;
     display: flex;
     align-items: center;
-    flex: 1;
   }
 
   .rr-timeline__time {
