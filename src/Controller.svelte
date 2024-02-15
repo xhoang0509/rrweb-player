@@ -2,28 +2,28 @@
   import type { Replayer } from 'rrweb';
   import { EventType } from 'rrweb';
   import type {
-      PlayerMachineState,
-      SpeedMachineState,
+    PlayerMachineState,
+    SpeedMachineState,
   } from 'rrweb/typings/replay/machine';
   import type { playerMetaData } from 'rrweb/typings/types';
   import {
-      afterUpdate,
-      createEventDispatcher,
-      onDestroy,
-      onMount,
+    afterUpdate,
+    createEventDispatcher,
+    onDestroy,
+    onMount,
   } from 'svelte';
   import Switch from './components/Switch.svelte';
   import {
-      IconAddTag,
-      MobileVerticalDotsMajor,
-      btnForward,
-      btnFullscreen,
-      btnMinimize,
-      btnNext,
-      btnPause,
-      btnPlaying,
-      btnPrevious,
-      btnRewind,
+    IconAddTag,
+    MobileVerticalDotsMajor,
+    btnForward,
+    btnFullscreen,
+    btnMinimize,
+    btnNext,
+    btnPause,
+    btnPlaying,
+    btnPrevious,
+    btnRewind,
   } from './constants/buttons.const';
   import { formatTime } from './utils';
   const dispatch = createEventDispatcher();
@@ -40,6 +40,7 @@
   export let onPrevious: () => void = () => {};
   export let onNext: () => void = () => {};
   export let onAddTag: () => void = () => {};
+  export let onFullscreen: () => void = () => {};
   let disablePrevious: boolean = false;
   let disableNext: boolean = false;
   let more: boolean = false;
@@ -260,6 +261,7 @@
     dispatch('fullscreen');
     activeSpeed = false;
     more = false;
+    onFullscreen();
   };
 
   // hidden speedOption & more popup when click overflow

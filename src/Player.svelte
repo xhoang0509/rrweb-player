@@ -27,6 +27,7 @@
   export let onPrevious: () => void = () => {};
   export let onNext: () => void = () => {};
   export let onAddTag: () => void = () => {};
+  export let onFullscreen: () => void = () => {};
   let replayer: Replayer;
 
   export const getMirror = () => replayer.getMirror();
@@ -242,6 +243,7 @@
       {onPrevious}
       {onNext}
       {onAddTag}
+      {onFullscreen}
       on:fullscreen={() => toggleFullscreen()}
     />
   {/if}

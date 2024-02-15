@@ -16,6 +16,7 @@ export type RRwebPlayerOptions = {
     onPrevious?: void;
     onNext?: void;
     onAddTag?: void;
+    onFullscreen?: void;
   } & Partial<playerConfig>;
 };
 
