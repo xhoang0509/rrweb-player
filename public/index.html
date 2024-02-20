@@ -32,7 +32,8 @@
         onPrevious: () => console.log(`onPrevious from index.html`),
         onNext: () => console.log(`onNext from index.html`),
         onAddTag: () => console.log(`onAddTag from index.html`),
-        onFullscreen: () => console.log(`onFullscreen from index.html`),
+        onFullscreen: () =>
+          console.log(`onFullscreen from index.html ${Date.now()}`),
       },
     });
     window.$c = component;

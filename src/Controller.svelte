@@ -40,7 +40,6 @@
   export let onPrevious: () => void = () => {};
   export let onNext: () => void = () => {};
   export let onAddTag: () => void = () => {};
-  export let onFullscreen: () => void = () => {};
   let disablePrevious: boolean = false;
   let disableNext: boolean = false;
   let more: boolean = false;
@@ -261,7 +260,6 @@
     dispatch('fullscreen');
     activeSpeed = false;
     more = false;
-    onFullscreen();
   };
 
   // hidden speedOption & more popup when click overflow

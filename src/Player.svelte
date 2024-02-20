@@ -214,6 +214,7 @@
     });
 
     document.addEventListener('fullscreenchange', () => {
+      onFullscreen();
       if (isFullscreen()) {
         fullScreenClass = 'full_screen';
       } else {
@@ -243,7 +244,6 @@
       {onPrevious}
       {onNext}
       {onAddTag}
-      {onFullscreen}
       on:fullscreen={() => toggleFullscreen()}
     />
   {/if}
