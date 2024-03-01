@@ -224,6 +224,19 @@
         fullScreenClass = '';
       }
     });
+
+    window.addEventListener(
+      'resize',
+      function (event) {
+        let newWidth = document.querySelector('body').offsetWidth;
+        if (newWidth < 900) {
+          width = newWidth * 0.95;
+        } else {
+          width = newWidth * 0.75;
+        }
+      },
+      true,
+    );
   });
 
   onDestroy(() => {
