@@ -15,6 +15,9 @@
   } from './utils';
 
   export let width: number = 1400;
+  if (width < 700) {
+    width = 700;
+  }
   export let height: number = 720;
   export let events: eventWithTime[] = [];
   export let skipInactive: boolean = true;

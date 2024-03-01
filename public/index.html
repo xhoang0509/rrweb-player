@@ -34,6 +34,7 @@
         onAddTag: () => console.log(`onAddTag from index.html`),
         onFullscreen: () =>
           console.log(`onFullscreen from index.html ${Date.now()}`),
+        width: document.querySelector('body').offsetWidth * 0.73,
       },
     });
     window.$c = component;
