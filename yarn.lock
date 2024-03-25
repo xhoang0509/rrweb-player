@@ -23,10 +23,10 @@
     "chalk" "^2.0.0"
     "js-tokens" "^4.0.0"
 
-"@bss-sbc/rrweb@^1.0.5":
-  "integrity" "sha512-ElIFMB14ZfSKtUxIaLN4x/b7KbolFAEWeF5PcgfFO/tjZEA6NlsTDqsiskJE2dKX+sVxJ6WEQ5xH1LYlMWkKZw=="
-  "resolved" "https://registry.npmjs.org/@bss-sbc/rrweb/-/rrweb-1.0.5.tgz"
-  "version" "1.0.5"
+"@bss-sbc/rrweb@^1.0.6":
+  "integrity" "sha512-fuw6ILL/3CqibtlTFhrvOd/jQeZN44+gYkHbJISBde8UcLnUwrCtxb5OY9NHiSgrhtQUUJVP0o6v+LPfkY34QQ=="
+  "resolved" "https://registry.npmjs.org/@bss-sbc/rrweb/-/rrweb-1.0.6.tgz"
+  "version" "1.0.6"
   dependencies:
     "@types/css-font-loading-module" "0.0.4"
     "@xstate/fsm" "^1.4.0"
