@@ -1,6 +1,6 @@
 {
   "name": "@bss-sbc/rrweb-player",
-  "version": "2.11.15",
+  "version": "2.11.16",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.0",
     "@rollup/plugin-node-resolve": "^7.0.0",
@@ -24,7 +24,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@bss-sbc/rrweb": "^1.0.6",
+    "@bss-sbc/rrweb": "^1.0.9",
     "@tsconfig/svelte": "^1.0.0",
     "rrweb": "^1.0.1"
   },
