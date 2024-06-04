@@ -50,6 +50,7 @@
     hiddenPopup: (event: any) => void;
   } & Controller;
   let style: string;
+  let bodyWidth: number = window.innerWidth;
   $: style = inlineCss({
     width: `${width}px`,
     height: `${height}px`,
@@ -234,6 +235,7 @@
         } else {
           width = newWidth * 0.75;
         }
+        bodyWidth = window.innerWidth;
       },
       true,
     );
@@ -257,6 +259,7 @@
       {skipInactive}
       {tags}
       {fullScreenClass}
+      {bodyWidth}
       {onPrevious}
       {onNext}
       {onAddTag}
@@ -267,6 +270,7 @@
 
 <style global>
   @import 'rrweb/dist/rrweb.min.css';
+  @import './styles/global.css';
 
   .rr-player {
     position: relative;

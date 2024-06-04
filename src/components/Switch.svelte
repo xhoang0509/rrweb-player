@@ -17,7 +17,7 @@
   };
 </script>
 
-<div class="switch" class:disabled>
+<div class="switch {id}" class:disabled>
   <input
     type="checkbox"
     {id}

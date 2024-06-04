@@ -1,0 +1,56 @@
+.rr-fullscreen {
+  display: none !important;
+}
+
+.rr-more-popup .rr-more-item:has(.rr-speed-wrapper),
+.rr-more-popup .rr-more-item:has(.switch.skip) {
+  display: none !important;
+}
+
+/* Responsive control bar*/
+/* md */
+@media screen and (max-width: 768px) {
+  .rr-button-rewind,
+  .rr-button-forward,
+  .rr-button-previous,
+  .rr-button-next {
+    display: none !important;
+  }
+}
+/* sm */
+@media screen and (max-width: 490px) {
+  .rr-player {
+    height: 400px !important;
+    width: 100% !important;
+  }
+  .rr-player__frame {
+    width: 100% !important;
+    height: 360px !important;
+  }
+
+  .replayer-wrapper {
+    transform: scale(0.18) translate(-50%, -50%) !important;
+  }
+
+  .rr-button-rewind,
+  .rr-button-forward,
+  .rr-button-previous,
+  .rr-button-next,
+  .rr-speed-wrapper,
+  .switch.skip {
+    display: none !important;
+  }
+  .rr-more-popup .rr-more-item:has(.rr-speed-wrapper),
+  .rr-more-popup .rr-more-item:has(.switch.skip) {
+    display: flex !important;
+  }
+  .rr-more-popup .rr-speed-wrapper {
+    display: block !important;
+  }
+  .rr-more-popup .switch.skip-in-more {
+    display: flex !important;
+  }
+  .rr-more-item .switch.autonext span.label {
+    padding-left: 7px;
+  }
+}

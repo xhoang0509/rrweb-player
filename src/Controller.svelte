@@ -37,6 +37,7 @@
   export let tags: Record<string, string> = {};
   export let activeSpeed: boolean = false;
   export let fullScreenClass: string;
+  export let bodyWidth: number;
   export let onPrevious: () => void = () => {};
   export let onNext: () => void = () => {};
   export let onAddTag: () => void = () => {};
@@ -46,6 +47,7 @@
   let autonext: boolean = false;
   let size: string = 'small';
   let currentTime = 0;
+  let speedOptionInPopup = false;
   $: {
     dispatch('ui-update-current-time', { payload: currentTime });
   }
@@ -106,6 +108,12 @@
     });
 
     return customEvents;
+  })();
+
+  $: (() => {
+    if (bodyWidth > 490) {
+      speedOptionInPopup = false;
+    }
   })();
 
   const loopTimer = () => {
@@ -199,6 +207,7 @@
       replayer.play(currentTime);
     }
     activeSpeed = false;
+    speedOptionInPopup = false;
   };
 
   export const toggleSkipInactive = () => {
@@ -210,6 +219,10 @@
     if (more) {
       more = !more;
     }
+  };
+
+  const toggleSpeedInPopup = () => {
+    speedOptionInPopup = !speedOptionInPopup;
   };
 
   const handleRewindTime = () => {
@@ -265,8 +278,9 @@
   // hidden speedOption & more popup when click overflow
   export const hiddenPopup = (event: any) => {
     const btnActiveListSpeed = document.querySelector('.rr-speed-wrapper');
-    const btnActiveMorePopup = document.querySelector('.rr-more');
-
+    const btnActiveMorePopup = document.querySelector(
+      '.rr-more, .switch.skip-in-more',
+    );
     if (activeSpeed && !btnActiveListSpeed.contains(event.target as Node)) {
       activeSpeed = false;
     }
@@ -365,76 +379,80 @@
         <div class="rr-time">
           {formatTime(currentTime)} / {formatTime(meta.totalTime)}
         </div>
-        <button
-          class="rr-btn-common-action rr-button-rewind"
-          on:click={handleRewindTime}
-        >
-          <span>10s</span>
-          &nbsp;
-          {@html btnRewind}
-        </button>
-        <button
-          class="rr-btn-common-action rr-button-forward"
-          on:click={handleForwardTime}
-        >
-          {@html btnForward}
-          &nbsp;
-          <span>10s</span>
-        </button>
-        <button
-          class="rr-btn-common-action rr-button-previous {disablePrevious
-            ? 'disable'
-            : ''}"
-          on:click={handlePrevious}
-        >
-          <span>Previous</span>
-          &nbsp;
-          {@html btnPrevious}
-        </button>
-        <button
-          class="rr-btn-common-action rr-button-next {disableNext
-            ? 'disable'
-            : ''}"
-          on:click={handleNext}
-        >
-          {@html btnNext}
-          &nbsp;
-          <span>Next</span>
-        </button>
+        {#if bodyWidth > 768}
+          <button
+            class="rr-btn-common-action rr-button-rewind"
+            on:click={handleRewindTime}
+          >
+            <span>10s</span>
+            &nbsp;
+            {@html btnRewind}
+          </button>
+          <button
+            class="rr-btn-common-action rr-button-forward"
+            on:click={handleForwardTime}
+          >
+            {@html btnForward}
+            &nbsp;
+            <span>10s</span>
+          </button>
+          <button
+            class="rr-btn-common-action rr-button-previous {disablePrevious
+              ? 'disable'
+              : ''}"
+            on:click={handlePrevious}
+          >
+            <span>Previous</span>
+            &nbsp;
+            {@html btnPrevious}
+          </button>
+          <button
+            class="rr-btn-common-action rr-button-next {disableNext
+              ? 'disable'
+              : ''}"
+            on:click={handleNext}
+          >
+            {@html btnNext}
+            &nbsp;
+            <span>Next</span>
+          </button>
+        {/if}
       </div>
       <div class="rr-controller-btn__right">
-        {#if activeSpeed}
-          <div class="rr-list-speed">
-            {#each speedOption as s}
-              <button
-                class:active={s === speed && speedState !== 'skipping'}
-                on:click={() => setSpeed(s)}
-              >
-                {s}x
-              </button>
-            {/each}
-          </div>
-        {/if}
+        {#if bodyWidth > 490}
+          {#if activeSpeed}
+            <div class="rr-list-speed">
+              {#each speedOption as s}
+                <button
+                  class:active={s === speed && speedState !== 'skipping'}
+                  on:click={() => setSpeed(s)}
+                >
+                  {s}x
+                </button>
+              {/each}
+            </div>
+          {/if}
 
-        <div class="rr-speed-wrapper" on:click={() => toggleOptionsPopup()}>
-          {speed}x Speed
-        </div>
-        <div class="rr-fullscreen" on:click={() => handleFullscreen()}>
-          <button>
-            {#if fullScreenClass === 'full_screen'}
-              {@html btnMinimize}
-            {:else}
-              {@html btnFullscreen}
-            {/if}
-          </button>
-          <span>Fullscreen</span>
-        </div>
-        <Switch
-          id="skip"
-          bind:checked={skipInactive}
-          disabled={false}
-          label="Skip inactive"
-        />
+          <div class="rr-speed-wrapper" on:click={() => toggleOptionsPopup()}>
+            {speed}x Speed
+          </div>
+          <div class="rr-fullscreen" on:click={() => handleFullscreen()}>
+            <button>
+              {#if fullScreenClass === 'full_screen'}
+                {@html btnMinimize}
+              {:else}
+                {@html btnFullscreen}
+              {/if}
+            </button>
+            <span>Fullscreen</span>
+          </div>
+          <Switch
+            id="skip"
+            bind:checked={skipInactive}
+            disabled={false}
+            label="Skip inactive"
+          />
+        {/if}
         <div class="rr-more">
           <button
             class="rr-more-button rr-btn-common-action"
@@ -444,19 +462,50 @@
           </button>
           {#if more}
             <div class="rr-more-popup">
-              <div class="rr-more-add-tag" on:click={onAddTag}>
-                <span>{@html IconAddTag}</span>
-                <span>Add tags</span>
-              </div>
-              <div class="rr-more-autonext">
-                <Switch
-                  id="autonext"
-                  bind:checked={autonext}
-                  bind:size
-                  disabled={false}
-                  label="Autoplay"
-                />
-              </div>
+              {#if bodyWidth <= 490}
+                <div class="rr-more-item {speedOptionInPopup ? 'hidden' : ''}">
+                  <div class="rr-speed-wrapper" on:click={toggleSpeedInPopup}>
+                    <span>{speed}x</span>Speed
+                  </div>
+                </div>
+                <div class="rr-more-item {speedOptionInPopup ? 'hidden' : ''}">
+                  <Switch
+                    id="skip-in-more"
+                    bind:checked={skipInactive}
+                    disabled={false}
+                    label="Skip inactive"
+                  />
+                </div>
+              {/if}
+
+              {#if speedOptionInPopup}
+                {#each speedOption as s}
+                  <button
+                    class:active={s === speed && speedState !== 'skipping'}
+                    on:click={() => setSpeed(s)}
+                  >
+                    {s}x
+                  </button>
+                {/each}
+              {:else}
+                <div class="rr-more-item">
+                  <div class="rr-more-add-tag" on:click={onAddTag}>
+                    <span>{@html IconAddTag}</span>
+                    <span>Add tags</span>
+                  </div>
+                </div>
+                <div class="rr-more-item">
+                  <div class="rr-more-autonext">
+                    <Switch
+                      id="autonext"
+                      bind:checked={autonext}
+                      bind:size
+                      disabled={false}
+                      label="Autoplay"
+                    />
+                  </div>
+                </div>
+              {/if}
             </div>
           {/if}
         </div>
@@ -727,9 +776,8 @@
     font-size: 14px;
     z-index: 10;
   }
-  .rr-more-add-tag,
-  .rr-more-autonext {
-    width: 114px;
+  .rr-more-item {
+    width: 150px;
     height: 32px;
     display: flex;
     align-items: center;
@@ -737,8 +785,19 @@
     cursor: pointer;
     font-size: 13px;
   }
+  .rr-more-item.hidden {
+    display: none !important;
+  }
+  .rr-more-add-tag,
+  .rr-more-autonext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+  }
 
-  .rr-more-add-tag:hover,
+  /* .rr-more-add-tag:hover,
   .rr-more-autonext:hover {
     background-color: #f7f7f7;
     color: #202223;
@@ -746,7 +805,7 @@
   .rr-more-add-tag:active,
   .rr-more-autonext:active {
     background-color: #f1f1f1;
-  }
+  } */
 
   .rr-more-add-tag {
     user-select: none;
@@ -759,5 +818,34 @@
 
   .rr-more-add-tag > span:last-child {
     padding-right: 8px;
+  }
+
+  /* Responsive control bar*/
+  /* md */
+  @media screen and (max-width: 768px) {
+  }
+  /* sm */
+  @media screen and (max-width: 490px) {
+    .rr-more-item {
+      height: 22px;
+      justify-content: start;
+      padding: 0 16px;
+    }
+    .rr-more-item .rr-more-add-tag > span {
+      padding: 0 !important;
+    }
+
+    .rr-more-item .rr-speed-wrapper > span,
+    .rr-more-item .rr-more-add-tag > span {
+      min-width: 34px;
+      display: inline-block;
+    }
+
+    .rr-more-item .rr-speed-wrapper:hover {
+      color: #000;
+    }
+    .rr-more-button {
+      border-radius: 10px !important;
+    }
   }
 </style>
