@@ -57,7 +57,7 @@
   });
   let playerStyle: string;
   $: playerStyle = inlineCss({
-    width: `${width}px`,
+    width: `${width - 24}px`,
     height: `${height + (showController ? controllerHeight : 0)}px`,
   });
 
@@ -65,6 +65,7 @@
     el: HTMLElement,
     frameDimension: { width: number; height: number },
   ) => {
+    console.log({ frameDimension });
     const widthScale = width / frameDimension.width;
     const heightScale = height / frameDimension.height;
     el.style.transform =

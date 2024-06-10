@@ -264,6 +264,7 @@
 
   const toggleMore = () => {
     more = !more;
+    speedOptionInPopup = false;
     if (activeSpeed) {
       activeSpeed = !activeSpeed;
     }
@@ -284,8 +285,11 @@
     if (activeSpeed && !btnActiveListSpeed.contains(event.target as Node)) {
       activeSpeed = false;
     }
+
     if (more && !btnActiveMorePopup.contains(event.target as Node)) {
-      more = false;
+      if (event.target.getAttribute('data-type') !== 'button-speed-in-popup') {
+        more = false;
+      }
     }
   };
 
@@ -479,14 +483,17 @@
               {/if}
 
               {#if speedOptionInPopup}
-                {#each speedOption as s}
-                  <button
-                    class:active={s === speed && speedState !== 'skipping'}
-                    on:click={() => setSpeed(s)}
-                  >
-                    {s}x
-                  </button>
-                {/each}
+                <div class="speed-option-in-popup">
+                  {#each speedOption as s}
+                    <button
+                      class:active={s === speed && speedState !== 'skipping'}
+                      on:click={() => setSpeed(s)}
+                      data-type="button-speed-in-popup"
+                    >
+                      {s}x
+                    </button>
+                  {/each}
+                </div>
               {:else}
                 <div class="rr-more-item">
                   <div class="rr-more-add-tag" on:click={onAddTag}>
@@ -672,11 +679,11 @@
     bottom: 36px;
     left: 14px;
     border-radius: 8px;
-    padding: 8px, 0px, 8px, 0px;
     z-index: 2;
     box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: -1px 1px 16px 0px rgba(0, 0, 0, 0.75);
+    padding: 8px 0px;
   }
 
   .rr-list-speed button {
@@ -846,6 +853,9 @@
     }
     .rr-more-button {
       border-radius: 10px !important;
+    }
+    .speed-option-in-popup {
+      padding: 0 8px;
     }
   }
 </style>
