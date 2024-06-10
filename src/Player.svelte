@@ -51,11 +51,13 @@
   } & Controller;
   let style: string;
   let bodyWidth: number = window.innerWidth;
+  let playerStyle: string;
+
   $: style = inlineCss({
-    width: `${width}px`,
+    width: `${width - 24}px`,
     height: `${height}px`,
   });
-  let playerStyle: string;
+
   $: playerStyle = inlineCss({
     width: `${width - 24}px`,
     height: `${height + (showController ? controllerHeight : 0)}px`,
@@ -65,12 +67,21 @@
     el: HTMLElement,
     frameDimension: { width: number; height: number },
   ) => {
-    console.log({ frameDimension });
-    const widthScale = width / frameDimension.width;
-    const heightScale = height / frameDimension.height;
-    el.style.transform =
-      `scale(${Math.min(widthScale, heightScale, 1) - 0.1})` +
-      'translate(-50%, -50%)';
+    let widthScale = width / frameDimension.width;
+    let heightScale = height / frameDimension.height;
+    const rrPlayerFrame = document.querySelector('.rr-player__frame');
+
+    if (replayer?.iframe) {
+      const iframeWidth = parseInt(replayer.iframe.getAttribute('width'));
+      const iframeHeight = parseInt(replayer.iframe.getAttribute('height'));
+      widthScale = rrPlayerFrame.getBoundingClientRect().width / iframeWidth;
+      heightScale = rrPlayerFrame.getBoundingClientRect().height / iframeHeight;
+    }
+
+    let scale = Math.min(widthScale, heightScale, 1);
+    scale = scale * 0.9;
+    
+    el.style.transform = `scale(${scale}) translate(-50%, -50%)`;
   };
 
   const fixedController = (el: HTMLElement) => {
@@ -229,7 +240,7 @@
 
     window.addEventListener(
       'resize',
-      function (event) {
+      function (_event) {
         let newWidth = document.querySelector('body').offsetWidth;
         if (newWidth < 900) {
           width = newWidth * 0.95;
@@ -237,6 +248,10 @@
           width = newWidth * 0.75;
         }
         bodyWidth = window.innerWidth;
+        updateScale(replayer.wrapper, {
+          width: replayer.iframe.offsetWidth,
+          height: replayer.iframe.offsetHeight,
+        });
       },
       true,
     );
