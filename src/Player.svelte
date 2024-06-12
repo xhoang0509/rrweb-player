@@ -71,7 +71,7 @@
     let heightScale = height / frameDimension.height;
     const rrPlayerFrame = document.querySelector('.rr-player__frame');
 
-    if (replayer?.iframe) {
+    if (replayer?.iframe && rrPlayerFrame) {
       const iframeWidth = parseInt(replayer.iframe.getAttribute('width'));
       const iframeHeight = parseInt(replayer.iframe.getAttribute('height'));
       widthScale = rrPlayerFrame.getBoundingClientRect().width / iframeWidth;
