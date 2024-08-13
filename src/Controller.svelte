@@ -25,7 +25,7 @@
     btnPrevious,
     btnRewind,
   } from './constants/buttons.const';
-  import { formatTime } from './utils';
+  import { formatTime, getClientXByEvent } from './utils';
   const dispatch = createEventDispatcher();
 
   export let replayer: Replayer;
@@ -41,6 +41,7 @@
   export let onPrevious: () => void = () => {};
   export let onNext: () => void = () => {};
   export let onAddTag: () => void = () => {};
+
   let disablePrevious: boolean = false;
   let disableNext: boolean = false;
   let more: boolean = false;
@@ -48,6 +49,11 @@
   let size: string = 'small';
   let currentTime = 0;
   let speedOptionInPopup = false;
+
+  // drag process bar
+  const min = 0;
+  const max = 100;
+
   $: {
     dispatch('ui-update-current-time', { payload: currentTime });
   }
@@ -59,6 +65,7 @@
   let speedState: 'normal' | 'skipping';
   let progress: HTMLElement;
   let step: HTMLElement;
+  let progressHandler: HTMLElement;
   let finished: boolean;
 
   let meta: playerMetaData;
@@ -344,6 +351,61 @@
     replayer.pause();
     stopTimer();
   });
+
+  // drag process
+  const updateSlider = (clientX: number) => {
+    const rect = progress.getBoundingClientRect();
+    const offsetX = clientX - rect.left;
+    const _percentage = Math.max(0, Math.min(1, offsetX / rect.width));
+    const value = Math.round(min + _percentage * (max - min));
+    step?.style.width = `${value}%`;
+    progressHandler?.style.left = `${value}%`;
+    // step.style.left = `${value}`;
+    percentage = `${value}`;
+  };
+
+  const handleMouseDown = (event: MouseEvent) => {
+    event.preventDefault();
+
+    let tempClientXMobile = 0;
+    const onMouseMove = (event: MouseEvent) => {
+      const clientX = getClientXByEvent(event);
+      tempClientXMobile = clientX;
+      progressHandler.style.boxShadow = '0 0 0 3px #e6e9ff';
+      replayer.pause();
+      replayer.setConfig({ skipInactive: false });
+      updateSlider(clientX);
+    };
+
+    const onMouseUp = (event: MouseEvent) => {
+      let clientX = 0;
+      if (event instanceof MouseEvent) {
+        clientX = getClientXByEvent(event);
+      } else if (event instanceof TouchEvent) {
+        clientX = tempClientXMobile;
+      }
+
+      progressHandler.style.boxShadow = 'unset';
+      const rect = progress.getBoundingClientRect();
+      const offsetX = clientX - rect.left;
+      const _percentage = Math.max(0, Math.min(1, offsetX / rect.width));
+      currentTime = _percentage * meta.totalTime;
+
+      replayer.play(currentTime);
+      replayer.setConfig({ skipInactive: false });
+      updateSlider(clientX);
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      document.addEventListener('touchmove', onMouseMove);
+      document.addEventListener('touchend', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('touchmove', onMouseMove);
+    document.addEventListener('touchend', onMouseUp);
+  };
 </script>
 
 {#if showController}
@@ -368,7 +430,13 @@
           />
         {/each}
 
-        <div class="rr-progress__handler" style="left: {percentage}" />
+        <div
+          bind:this={progressHandler}
+          class="rr-progress__handler"
+          style="left: {percentage}"
+          on:mousedown={handleMouseDown}
+          on:touchstart={handleMouseDown}
+        />
       </div>
     </div>
     <div class="rr-controller__btns">
@@ -571,13 +639,17 @@
   }
 
   .rr-progress__handler {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     border-radius: 10px;
     position: absolute;
     top: 2px;
     transform: translate(-50%, -50%);
     background: #5f6dc5;
+  }
+
+  .rr-progress__handler:hover {
+    box-shadow: 0 0 0 3px #e6e9ff !important;
   }
 
   .rr-controller__btns {
@@ -591,6 +663,7 @@
     font-size: 14px;
     padding: 0 8px;
     border-radius: 0 0 8px 8px;
+    user-select: none;
   }
 
   .rr-controller__btns button {

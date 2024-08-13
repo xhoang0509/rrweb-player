@@ -114,7 +114,7 @@
   }
 
   .switch input[type='checkbox']:checked + label:before {
-    background: #707dd0;
+    background: #9891fc;
   }
 
   .switch input[type='checkbox']:checked + label:after {

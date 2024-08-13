@@ -311,6 +311,7 @@
     transform-origin: top left;
     left: 50%;
     top: 50%;
+    user-select: none;
   }
 
   .replayer-wrapper > iframe {

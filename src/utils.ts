@@ -141,3 +141,18 @@ export function setCSS(element: HTMLElement, styles: any) {
     }
   }
 }
+
+export function getClientXByEvent(event: MouseEvent | TouchEvent) {
+  let clientX = 0;
+  if (event instanceof TouchEvent) {
+    const touchEvent = event as TouchEvent;
+    clientX = touchEvent.touches[0]?.clientX ?? 0;
+  } else if (event instanceof MouseEvent) {
+    clientX = event.clientX;
+  }
+
+  if (clientX > 0) {
+    return clientX;
+  }
+  return 0;
+}
